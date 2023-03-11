@@ -23,11 +23,15 @@ def eval_results(model, data_set, model_name, Y_train, Y_test, Y_pred_train, Y_p
     #rmse_test = mean_squared_error(Y_test, Y_pred_test, squared=False)
     test_r2 = r2_score(Y_test, Y_pred_test)
     test_mae = mean_absolute_error(Y_test, Y_pred_test)
+    
+    print(f"PREDICTIONS OF {model_name} MODEL ON {data_set} DATASET:")
+    print(f"Train Predictions({data_set}):\n{Y_pred_train}\n-----------------------------------------\n")
+    print(f"Test Predictions({data_set}):\n{Y_pred_test}\n--------------------------------------\n")
+    
+    print(f"{model_name} MODEL EVALUATION FOR {data_set} DATASET:")
+    print(f"Train MSE: {train_mse} Train R2: {train_r2} Train MAE: {train_mae}\nTest MSE: {test_mse} Test R2: {test_r2} Test MAE: {test_mae}")
+    print(f"EVALUATION OF {model_name} WITH {data_set} DATA: COMPLETE\n")
 
-    print(f"EVALUATION OF ML MODEL {model_name} on DATASET({data_set})")
-    print(f"Training Predictions({data_set}):\n{Y_pred_train.head()}\n-----------\nTesting Predictions({data_set}):\n{Y_pred_test.head()}\n\nMODEL EVALUATION({data_set}):\nTrain MSE: {train_mse} Train R2: {train_r2} Train MAE: {train_mae}\nTest MSE: {test_mse} Test R2: {test_r2} Test MAE: {test_mae}\n")
-    print(f"MODEL EVAL COMPLETE, END EVAL OF {data_set} DATASET\n")
-    return train_mse, train_r2, train_mae, test_mse, test_r2, test_mae
   
   
 
