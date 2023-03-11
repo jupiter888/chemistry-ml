@@ -31,7 +31,18 @@ def eval_results(model, data_set, model_name, Y_train, Y_test, Y_pred_train, Y_p
     print(f"{model_name} MODEL EVALUATION FOR {data_set} DATASET:")
     print(f"Train MSE: {train_mse} Train R2: {train_r2} Train MAE: {train_mae}\nTest MSE: {test_mse} Test R2: {test_r2} Test MAE: {test_mae}")
     print(f"EVALUATION OF {model_name} WITH {data_set} DATA: COMPLETE\n")
-
+    
+    # Return evaluation metrics as a dictionary
+    return {
+        'model': model.__class__.__name__,
+        'data_set': data_set,
+        'train_mse': train_mse,
+        'train_r2': train_r2,
+        'train_mae': train_mae,
+        'test_mse': test_mse,
+        'test_r2': test_r2,
+        'test_mae': test_mae,
+    }
   
   
 
