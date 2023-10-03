@@ -1,6 +1,10 @@
 import pandas as pd
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-
+# regressor type 
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression, LassoCV, RidgeCV
+from sklearn.model_selection import cross_val_score
 ### Upcoming modules:
     # Initialize eval-results-df-appender, train-and-test-predictions-df-appender, model hyperparameter arrays
     # 
@@ -74,5 +78,48 @@ def update_pred_df(preds_df, dataset_name, model_name, Y_train_pred, Y_test_pred
     }, ignore_index=True)
     # return updated df
     return preds_df
-  
-  
+    
+    
+
+def select_regression_model(dataset_id, x_train, x_test, y_train, y_test):
+    # init lists for results & model names
+    results = []
+    models = []
+
+    # linear regression
+    linear_reg = LinearRegression()
+    linear_reg.fit(x_train, y_train)
+    linear_reg_pred = linear_reg.predict(x_test)
+    linear_reg_mse = mean_squared_error(y_test, linear_reg_pred)
+    results.append(linear_reg_mse)
+    models.append("Linear Regression")
+
+    # lasso regression w/ cross-validation
+    lasso_reg = LassoCV(alphas=np.logspace(-6, 6, 13))
+    lasso_reg.fit(x_train, y_train)
+    lasso_reg_pred = lasso_reg.predict(x_test)
+    lasso_reg_mse = mean_squared_error(y_test, lasso_reg_pred)
+    results.append(lasso_reg_mse)
+    models.append("Lasso Regression")
+
+    # ridge regression w/ cross-validation
+    ridge_reg = RidgeCV(alphas=np.logspace(-6, 6, 13))
+    ridge_reg.fit(x_train, y_train)
+    ridge_reg_pred = ridge_reg.predict(x_test)
+    ridge_reg_mse = mean_squared_error(y_test, ridge_reg_pred)
+    results.append(ridge_reg_mse)
+    models.append("Ridge Regression")
+
+    # plot results
+    plt.bar(models, results)
+    plt.xlabel('Models')
+    plt.ylabel('Mean Squared Error')
+    plt.title(f'Dataset {dataset_id} - Model Selection')
+    plt.xticks(rotation=45)
+    plt.show()
+
+    # print model selection info
+    min_mse_index = np.argmin(results)
+    selected_model = models[min_mse_index]
+    print(f'Dataset {dataset_id} - Recommended Regression Model: {selected_model}')
+    print(f'Minimum Mean Squared Error: {results[min_mse_index]}')
